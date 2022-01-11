@@ -17,7 +17,7 @@ int main()
 	int u_index; //current user
 	int j_index; //current job 
 	int j_update; 
-	
+
 	printf("~ Wellcome to NewJob ~");
 	while (login_select != LOGOUT)
 	{
@@ -63,11 +63,14 @@ int main()
 					else {
 						j_update = view_all_my_jobs(u_index, &jobs, j_size);
 						if (j_update == INVALID) break;
-						if (jobs[j_update].total == 0) { printf("Sorry! No candidates were found for this job \n"); break; }
+						if (jobs[j_update].total == 0) { printf("\nSorry! No candidates were found for this job \n"); break; }
+						printf("\033[0;33m");
+						printf("\n\n-----------------------------------");
+						printf("\033[0;37m");
 						printf("\n~View Candidates profiles\n");
-						if (jobs[j_update].candidate1 != INVALID) { print_user(users[jobs[j_index].candidate1]); }
-						if (jobs[j_update].candidate2 != INVALID) { print_user(users[jobs[j_index].candidate2]); }
-						if (jobs[j_update].candidate3 != INVALID) { print_user(users[jobs[j_index].candidate3]); }
+						if (jobs[j_update].candidate1 != INVALID) { print_user(users[jobs[j_update].candidate1]); }
+						if (jobs[j_update].candidate2 != INVALID) { print_user(users[jobs[j_update].candidate2]); }
+						if (jobs[j_update].candidate3 != INVALID) { print_user(users[jobs[j_update].candidate3]); }
 					}
 					break;
 				} 
@@ -91,7 +94,9 @@ int main()
 			break; 
 		}
 	}
+	printf("\033[0;33m");
 	printf("\nGoodbye :)\n");
+	printf("\033[0;37m");
 	write_to_size(u_size);
 	write_to_users(users, u_size);
 	write_to_login(login, u_size);
@@ -178,14 +183,20 @@ struct job* jobs_arr(int size)
 //login and registration
 int login_page() 
 {
-	printf("\n\n~ Login and registration\n1. Sign in (for registered users)\n2. Join (for new users)\n3. Quit\n\n");
+	printf("\033[0;33m");
+	printf("\n\n-----------------------------------");
+	printf("\033[0;37m");
+	printf("\n~ Login and registration\n1. Sign in (for registered users)\n2. Join (for new users)\n3. Quit\n\n");
 	return type_number(1,3);
 } 
 
 int sign_in_page(struct login* arr, int size)
 {
-	char id[ID];
-	char pass[PASS];
+	char id[MAX_STR];
+	char pass[MAX_STR];
+	printf("\033[0;33m");
+	printf("\n\n-----------------------------------");
+	printf("\033[0;37m");
 	printf("\n~ Login\nPlease enter your : \nID number (9 digits) : "); scanf("%s", id);
 	printf("Password (6 - 8 digits) : "); scanf("%s", pass);
 	for (int i = 0; i < size; i++)
@@ -198,7 +209,11 @@ int sign_in_page(struct login* arr, int size)
 
 void join_page(struct user * newUser)
 {
-	printf("\n~Welcome to the registration process, Please fill in all the fields as per the requirements \n");
+	printf("\033[0;33m");
+	printf("\n\n-----------------------------------");
+	printf("\033[0;37m");
+	printf("\n~ Join"); 
+	printf("\nWelcome to the registration process, Please fill in all the fields as per the requirements \n\n");
 	printf("first name (up to 10 characters) : "); 
 	get_str(newUser->f_name, 1, F_NAME - 1, F);
 	printf("last name (up to 10 characters) : "); 
@@ -221,6 +236,9 @@ void join_page(struct user * newUser)
 //main menu options
 int main_menu(char * purpose) 
 {
+	printf("\033[0;33m");
+	printf("\n\n-----------------------------------");
+	printf("\033[0;37m");
 	printf("\n~ Main menu\n");
 	printf("1. Edit profile\n");
 	printf("2. Job search\n");
@@ -239,7 +257,10 @@ int main_menu(char * purpose)
 void edit_profile(struct user* user)
 {
 	char str[MAX_STR];
-	printf("\n\n~ Edit profile \nType 'yes' for a field you want to change\n");
+	printf("\033[0;33m");
+	printf("\n\n-----------------------------------");
+	printf("\033[0;37m");
+	printf("\n~ Edit profile \nType 'yes' for a field you want to change\n");
 	
 	printf("update your first name (%s) ?", user->f_name);  scanf("%s",str);
 	if (strcmp(str, "yes") == 0) {
@@ -272,6 +293,9 @@ void edit_profile(struct user* user)
 int select_filters(int *j_filter)
 {
 	int sub_filter = 0;
+	printf("\033[0;33m");
+	printf("\n\n-----------------------------------");
+	printf("\033[0;37m");
 	printf("\n~ Job search \nSelect a number of job filtering category\n");
 	printf("1. Profession \n2. Location \n3. Job type \n4. Experience \n5. View all\n");
 	*j_filter = type_number(1, 5);
@@ -430,43 +454,326 @@ void add_profile(int index, struct job * job)
 	return;
 }
 
+
 void aptitude_test()
 {
-	char answer[10];
-	printf("\n~Aptitude test\nDo you like working with people ?\n");
-	scanf("%s", answer);
-	if (strcmp(answer, "yes") == 0)
-	{
-		printf("Are you afraid of blood ?\n");
-		scanf("%s", answer);
-		if (strcmp(answer, "yes") == 0)
-		{
-			printf("you will be a good teacher ! \n");
-		}
-		else
-		{
-			printf("you will be a good doctor ! \n");
-
-		}
+	int answer;
+	int tec = 0, doc = 0, but = 0, eng = 0;
+	printf("\033[0;33m");
+	printf("\n\n-----------------------------------");
+	printf("\033[0;37m");
+	printf("\n~ Aptitude test\n\n");
+	printf("Ten questions are presented to you, for each question four possible answers\n");
+	printf("Answer all the questions carefully and find out which profession is most suitable for you ! \n");
+	printf("\n1) Do you like working with people?\n-----------------------------------");
+	printf("\n1. Yes, especially with children and youth\n2. Yes, I like people\n3. No\n4. In a small team\n");
+	answer = type_number(1, 4);
+	if (answer == 1) {tec += 10;}
+	if (answer == 2) {doc += 10;}
+	if (answer == 3){
+		but += 10;
+		doc -= 10;
+		tec -= 10;
 	}
-	else
+	if (answer == 4){eng += 10;}
+	printf("\n2) Are you coping well with stressful situations?\n-------------------------------------------------");
+	printf("\n1. Sometimes yes and sometimes no\n2. Yes, I'm staying focused\n3. No\n4. Yes, stress drives me to the goal\n");
+	answer = type_number(1, 4);
+	if (answer == 1) { tec += 10; }
+	if (answer == 2)
 	{
-		printf("Are you afraid of blood ?\n");
-		scanf("%s", answer);
-		if (strcmp(answer, "yes") == 0)
-		{
-			printf("you will be a good software engineer !\n");
-		}
-		else
-		{
-			printf("you will be a good butcher !\n");
-		}
+		doc += 10;
+	}
+	if (answer == 3)
+	{
+		but += 10;
+		doc -= 100;
+	}
+	if (answer == 4)
+	{
+		eng += 10;
+	}
+	printf("\n3) Which area is more interesting to you?\n-----------------------------------------");
+	printf("\n1. Education\n2. Research and science\n3. Practical\n4. Computers");
+	answer = type_number(1, 4);
+	if (answer == 1){
+		tec += 20;
+		doc -= 10;
+		eng -= 10;
+		but -= 10;
+	}
+	if (answer == 2) {
+		tec -= 10;
+		doc += 20;
+		eng -= 10;
+		but -= 10;
+	}
+	if (answer == 3) {
+		but += 20;
+		tec -= 10;
+		doc -= 10;
+		eng -= 10;
+	}
+	if (answer == 4) {
+		eng += 20;
+		but -= 10;
+		tec -= 10;
+		doc -= 10;
+	}
+	
+	printf("\n4) Are you acting on emotion?\n-----------------------------");
+	printf("\n1. Sometimes\n2. No, I can separate emotion from work\n3. No\n4. Yes\n");
+	answer = type_number(1, 4);
+	if (answer == 1)
+	{
+		tec += 10;
+	}
+	if (answer == 2)
+	{
+		doc += 10;
+	}
+	if (answer == 3)
+	{
+		but += 10;
+	}
+	if (answer == 4)
+	{
+		eng += 10;
+		doc -= 10;
+		tec -= 10;
+	}
+	printf("\n5) Are you stressed out that you have a big responsibility?\n-----------------------------------------------------------");
+	printf("\n1. No, I'll try to do my best\n2. No, I enjoy being trusted.\n3. Yes\n4. Not so\n");
+	answer = type_number(1, 4);
 
+	if (answer == 1)
+	{
+		tec += 10;
+	}
+	if (answer == 2)
+	{
+		doc += 10;
+	}
+	if (answer == 3)
+	{
+		but += 10;
+		doc -= 50;
+		eng -= 10;
+	}
+	if (answer == 4)
+	{
+		eng += 10;
+	}
+
+
+	printf("\n6) Describe the extent to which you take command of teamwork?\n-------------------------------------------------------------");
+	printf("\n1. To a lesser extent\n2. Occasionally\n3. In good measure\n4. To an excellent extent I am the leader\n");
+	answer = type_number(1, 4);
+
+	if (answer == 1)
+	{
+		but += 10;
+	}
+	if (answer == 2)
+	{
+		doc += 10;
+	}
+	if (answer == 3)
+	{
+		tec += 10;
+	}
+	if (answer == 4)
+	{
+		eng += 10;
+	}
+
+
+	printf("\n7) Do you consider yourself a more creative person than a practical person?\n---------------------------------------------------------------------------");
+	printf("\n1. No \n2. Rarely \n3. Yes, I connect to creativity \n4. Very creative than practical\n");
+	answer = type_number(1, 4);
+
+	if (answer == 1)
+	{
+		but += 10;
+	}
+	if (answer == 2)
+	{
+		doc += 10;
+	}
+	if (answer == 3)
+	{
+		tec += 10;
+	}
+	if (answer == 4)
+	{
+		eng += 10;
+		but -= 10;
+	}
+
+
+	printf("\n8) Are you looking for a job that will challenge you?\n-----------------------------------------------------");
+	printf("\n1. No \n2. Yes, and better as much as possible\n3. Rarely \n4. Love to challenge myself often\n");
+	answer = type_number(1, 4);
+	if (answer == 1)
+	{
+		but += 10;
+		doc -= 10;
+	}
+	if (answer == 2)
+	{
+		doc += 10;
+	}
+	if (answer == 3)
+	{
+		tec += 10;
+	}
+	if (answer == 4)
+	{
+		eng += 10;
+		but -= 10;
+	}
+
+
+	printf("\n9) Have you ever considered creating something of your own?\n-----------------------------------------------------------");
+	printf("\n1. No \n2. I thought but did not implement\n3. Not something specific\n4. I always think about it\n");
+	answer = type_number(1, 4);
+
+	if (answer == 1)
+	{
+		but += 10;
+	}
+	if (answer == 2)
+	{
+		doc += 10;
+	}
+	if (answer == 3)
+	{
+		tec += 10;
+	}
+	if (answer == 4)
+	{
+		eng += 10;
+	}
+
+
+	printf("\n10) Is it important for you to work regular hours?\n--------------------------------------------------");
+	printf("\n1. Not at all \n2. No \n3. Yes \n4. Yes, the kids are waiting for me at home\n");
+	answer = type_number(1, 4);
+
+	if (answer == 1)
+	{
+		doc += 10;
+	}
+	if (answer == 2)
+	{
+		eng += 10;
+	}
+	if (answer == 3)
+	{
+		but += 10;
+		eng -= 10;
+		doc -= 40;
+	}
+	if (answer == 4)
+	{
+		tec += 10;
+		eng -= 10;
+		doc -= 40;
+	}
+
+	int max_counter = find_max(find_max(find_max(but, doc), tec), eng);
+	char ans[20];
+	if (max_counter == tec)
+	{
+		printf("\033[0;36m");
+		printf("\n\n*************************************"); printf("\033[0;33m");
+		printf("\nResult : you will be a good Teacher !"); printf("\033[0;36m");
+		printf("\n*************************************"); printf("\033[0;37m");
+		printf("\n\nIf you are interested in receiving information about teachers - type 'yes' ");
+		scanf("%s", ans);
+		if (strcmp(ans, "yes") == 0) { jobinformation(1); }
+		return;
+	}
+	if (max_counter == doc)
+	{
+		printf("\033[0;36m");
+		printf("\n\n************************************"); printf("\033[0;33m");
+		printf("\nResult : you will be a good Doctor !"); printf("\033[0;36m");
+		printf("\n************************************"); printf("\033[0;37m");
+		printf("\n\nIf you are interested in receiving information about doctors - type 'yes' ");
+		scanf("%s", ans);
+		if (strcmp(ans, "yes") == 0) { jobinformation(2); }
+		return;
+	}
+	if (max_counter == but)
+	{
+		printf("\033[0;36m");
+		printf("\n\n*************************************"); printf("\033[0;33m");
+		printf("\nResult : you will be a good Butcher !"); printf("\033[0;36m");
+		printf("\n*************************************"); printf("\033[0;37m");
+		printf("\n\nIf you are interested in receiving information about butchers - type 'yes' ");
+		scanf("%s", ans);
+		if (strcmp(ans, "yes") == 0) { jobinformation(4); }
+		return;
+	}
+	if (max_counter == eng)
+	{
+		printf("\033[0;36m");
+		printf("\n\n***********************************************"); printf("\033[0;33m");
+		printf("\nResult : you will be a good Software Engineer !"); printf("\033[0;36m");
+		printf("\n***********************************************"); printf("\033[0;37m");
+		printf("\n\nIf you are interested in receiving information about software engineers - type 'yes' ");
+		scanf("%s", ans);
+		if (strcmp(ans, "yes") == 0) { jobinformation(3); }
+		return;
+	}
+}
+
+
+void jobinformation(int answer)
+{
+	switch (answer)
+	{
+	case(1):
+		printf("\n\nHere are some interesting information about teachers:\n"
+			"\nTeachers are very tolarance people with alot of emotions and self controll, \nthey dont only care about teaching but making the students feel precious and important.\n"
+			"\nThe monthly salary of a teacher with 0-5 years of experience is: 5000-6500 ILS.\nBut with 5-10 years it will be raised to: 6000-8000 ILS.\n"
+			"\nFeatures that you can achieve: responsibility, patience and tolerance.");
+		return;
+	case(2):
+		printf("\n\nHere are some interesting information about doctors:\n"
+			"\nDoctors are simple people but with great deeds on their hands,\nall they wish for is to felp the other and to bring hope and health to the world,"
+			"\nthey may seem emotionless but they care as much as you do they just stay professionals.\n"
+			"\nThe monthly salary of a doctor with 0-5 years of experience is: 6000-8000 ILS.\n"
+			"But with 5-10 years it will be raised to: 9000-20000 ILS.\n"
+			"\nFeatures that you can achieve: punctuality, Coolness, sharpness.");
+		return;
+	case(3):
+		printf("\n\nHere are some interesting information about software engineers:\n"
+			"\nSoftware engineers are outstanding people with a self-learning ability,\nall they wish for is to make the world a better and "
+			"an easier place to live in with the help of technology.\n"
+			"\nThe monthly salary of a software engineer with 0-5 years of experience is: 10000-20000 ILS.\n"
+			"But with 5-10 years it will be raised to: 20000-33000 ILS.\n"
+			"\nFeatures that you can achieve: self -learning, persistence, the ability to fulfill yourself even in a team work.");
+		return;
+	case(4):
+		printf("\n\nHere are some interesting information about butchers:\n"
+			"\nButcher's work is a hand work which is being done with alot of punctuality and paying attention,"
+			"\nthis work will allways be needed especially beacuse machines will not be able to perfom this work.\n"
+			"\nThe monthly salary of a butcher with 0-5 years of experience is: 10000-15000 ILS.\n"
+			"But with 5 - 10 years it will be raised to: 15500-20000 ILS.\n"
+			"\nFeatures that you can achieve: hard worker , sturdiness.");
+		return;
+	default:
+		return;
 	}
 }
 
 void publish_job(struct job * job, int index)
 {
+	printf("\033[0;33m");
+	printf("\n\n-----------------------------------");
+	printf("\033[0;37m");
 	job->employer = index;
 	printf("\n~ Publish NewJob \n\nProfession : 1.Software Engineer 2.Doctor 3.Teacher 4.Butcher \n");
 	job->profession = type_number(1, 4);
@@ -487,6 +794,10 @@ void publish_job(struct job * job, int index)
 
 void submissions_history(int index, struct job * jobs, int j_size)
 {
+	printf("\033[0;33m");
+	printf("\n\n-----------------------------------");
+	printf("\033[0;37m");
+	printf("\n~ Submission's history\n");
 	int flag = 0;
 	for (int i = 0; i < j_size; i++)
 	{
@@ -500,6 +811,10 @@ void submissions_history(int index, struct job * jobs, int j_size)
 
 int view_all_my_jobs(int index, struct job ** jobs, int j_size)
 {
+	printf("\033[0;33m");
+	printf("\n\n-----------------------------------");
+	printf("\033[0;37m");
+	printf("\n~ View all my jobs\n");
 	char ans[MAX_STR];
 	int job_num;
 	int flag = 0;
@@ -550,6 +865,9 @@ int view_all_my_jobs(int index, struct job ** jobs, int j_size)
 void update_job(struct job *job)
 {
 	char answer[10];
+	printf("\033[0;33m");
+	printf("\n\n-----------------------------------");
+	printf("\033[0;37m");
 	printf("\n~Update a job\nType 'yes' for a field you want to update\n");
 	printf("Update profession ? "); scanf("%s", answer);
 	if (strcmp(answer, "yes") == 0) {
@@ -604,13 +922,20 @@ void print_user(struct user c)
 // check input
 int type_number(int start, int end)
 {
-	int select;
-	printf("Please enter number between %d - %d ", start, end); scanf("%d", &select);
+	char s_select[20];
+	printf("Please enter number between %d - %d ", start, end); scanf("%s", s_select);
+	int select = atoi(s_select);
 	while ((select < start) || (select > end))
 	{
-		printf("invalid input ! type number between %d - %d ", start, end); scanf("%d", &select);
+		printf("invalid input ! type number between %d - %d ", start, end); scanf("%s", s_select);
+		select = atoi(s_select);
 	}
 	return select;
+}
+
+int find_max(int num1, int num2)
+{
+	return (num1 > num2) ? num1 : num2;
 }
 
 boolean isNumber(const char* s)
@@ -681,7 +1006,7 @@ void write_to_size(int size)
 void write_to_users(struct user* users, int size)
 {
 	FILE* usr = NULL;
-	usr = fopen("users1.txt", "w"); if (!usr) { return; } // ìäçæéø ùâéàä
+	usr = fopen("users1.txt", "w"); if (!usr) { return; } // ×œ×”×—×–×™×¨ ×©×’×™××”
 	for (int i = 0; i < size; i++)
 	{
 		fprintf(usr, "%s %s ", users[i].f_name, users[i].l_name);
@@ -696,7 +1021,7 @@ void write_to_users(struct user* users, int size)
 void write_to_login(struct login* login, int size)
 {
 	FILE* lg = NULL;
-	lg = fopen("login1.txt", "w"); if (!lg) { return; } // ìäçæéø ùâéàä
+	lg = fopen("login1.txt", "w"); if (!lg) { return; } // ×œ×”×—×–×™×¨ ×©×’×™××”
 	for (int i = 0; i < size; i++)
 	{
 		fprintf(lg, "%s %s\n", login[i].id, login[i].pass);
@@ -717,7 +1042,7 @@ void write_to_jsize(int size)
 void write_to_jobs(struct job* jobs, int size)
 {
 	FILE* jb = NULL;
-	jb = fopen("jobs1.txt", "w"); if (!jb) { return; } // ìäçæéø ùâéàä
+	jb = fopen("jobs1.txt", "w"); if (!jb) { return; } // ×œ×”×—×–×™×¨ ×©×’×™××”
 	for (int i = 0; i < size; i++)
 	{
 		fprintf(jb, "%d %d ", jobs[i].employer, jobs[i].profession);
