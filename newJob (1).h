@@ -69,6 +69,7 @@ void print_job(struct job * job, int index);
 boolean submit_profile(int index, int j_filter, int sub_filter, struct job * job);
 void add_profile(int index, struct job * job);
 void aptitude_test();
+void jobinformation(int answer);
 void publish_job(struct job * job, int index);
 void submissions_history(int index, struct job * jobs, int j_size);
 int view_all_my_jobs(int index, struct job ** jobs, int j_size);
@@ -83,6 +84,8 @@ int isdigit(char c);
 boolean checkAge(char* age);
 void get_str(char * str, size_t start, size_t end, boolean only_numbers);
 boolean id_exist(char * id, struct login * login, int size);
+int find_max(int num1, int num2);
+
 
 //write to files - end 
 void write_to_size(int size);
@@ -90,10 +93,6 @@ void write_to_users(struct user* users, int size);
 void write_to_login(struct login* login, int size);
 void write_to_jsize(int size);
 void write_to_jobs(struct job* jobs, int size);
-
-
-
-
 
 
 
